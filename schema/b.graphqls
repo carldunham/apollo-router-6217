@@ -1,0 +1,63 @@
+# B
+
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.2"
+    import: ["@key", "@external", "@shareable", "@composeDirective"]
+  )
+
+type SDWatchFeed @shareable {
+  elements: ElementConnection
+}
+
+interface Element {
+  id: ID!
+}
+
+type ElementConnection @shareable {
+  edges: [ElementEdge]!
+}
+
+type ElementEdge @shareable {
+  node: Element
+}
+
+type CompactPostCommunityRecommendationsFeedUnit implements Element @shareable {
+  id: ID!
+  communityRecommendations: [CompactPostCommunityRecommendation!]!
+}
+
+type CompactPostCommunityRecommendation @shareable {
+  posts(before: String, after: String, first: Int, last: Int): PostConnection
+}
+
+type CardPostCommunityRecommendationsFeedUnit implements Element @shareable {
+  id: ID!
+  communityRecommendations: [CardPostCommunityRecommendation!]!
+}
+
+type CardPostCommunityRecommendation @shareable {
+  posts: PostConnection
+}
+
+type PostConnection @shareable {
+  edges: [PostEdge]!
+}
+
+type PostEdge @shareable {
+  node: Post
+}
+
+interface Post {
+  id: ID!
+}
+
+type StillMedia @shareable {
+  content(maxWidth: MaxWidthValue): MediaSource
+}
+
+scalar MaxWidthValue
+
+type MediaSource @shareable {
+  id: ID!
+}

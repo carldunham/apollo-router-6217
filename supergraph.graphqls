@@ -1,0 +1,152 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.2", for: EXECUTION)
+{
+  query: Query
+}
+
+directive @join__field(graph: join__Graph!, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+type CardPostCommunityRecommendation
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  posts: PostConnection
+}
+
+type CardPostCommunityRecommendationsFeedUnit implements Element
+  @join__implements(graph: A, interface: "Element")
+  @join__implements(graph: B, interface: "Element")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+  communityRecommendations: [CardPostCommunityRecommendation!]!
+}
+
+type CompactPostCommunityRecommendation
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  posts(before: String, after: String, first: Int, last: Int): PostConnection
+}
+
+type CompactPostCommunityRecommendationsFeedUnit implements Element
+  @join__implements(graph: A, interface: "Element")
+  @join__implements(graph: B, interface: "Element")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+  communityRecommendations: [CompactPostCommunityRecommendation!]!
+}
+
+interface Element
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+}
+
+type ElementConnection
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  edges: [ElementEdge]!
+}
+
+type ElementEdge
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  node: Element
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  A @join__graph(name: "a", url: "http://localhost:8070/query")
+  B @join__graph(name: "b", url: "http://localhost:8071/query")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+scalar MaxWidthValue
+  @join__type(graph: A)
+  @join__type(graph: B)
+
+type Media
+  @join__type(graph: A)
+{
+  still: StillMedia
+}
+
+type MediaSource
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+}
+
+interface Post
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+  media: Media @join__field(graph: A)
+}
+
+type PostConnection
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  edges: [PostEdge]!
+}
+
+type PostEdge
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  node: Post
+}
+
+type Query
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  watchFeed: SDWatchFeed @join__field(graph: A)
+}
+
+type SDWatchFeed
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  elements: ElementConnection
+}
+
+type StillMedia
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  content(maxWidth: MaxWidthValue): MediaSource
+}
