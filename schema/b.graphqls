@@ -6,6 +6,10 @@ extend schema
     import: ["@key", "@external", "@shareable", "@composeDirective"]
   )
 
+type Query {
+  watchFeed: SDWatchFeed
+}
+
 type SDWatchFeed @shareable {
   elements: ElementConnection
 }
@@ -28,7 +32,7 @@ type CompactPostCommunityRecommendationsFeedUnit implements Element @shareable {
 }
 
 type CompactPostCommunityRecommendation @shareable {
-  posts(before: String, after: String, first: Int, last: Int): PostConnection
+  posts: PostConnection
 }
 
 type CardPostCommunityRecommendationsFeedUnit implements Element @shareable {
