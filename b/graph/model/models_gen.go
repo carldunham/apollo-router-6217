@@ -66,3 +66,12 @@ type SDWatchFeed struct {
 type StillMedia struct {
 	Content *MediaSource `json:"content,omitempty"`
 }
+
+type SubredditPost struct {
+	ID string `json:"id"`
+}
+
+func (SubredditPost) IsPost()            {}
+func (this SubredditPost) GetID() string { return this.ID }
+
+func (SubredditPost) IsEntity() {}

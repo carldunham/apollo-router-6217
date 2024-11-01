@@ -66,3 +66,8 @@ scalar MaxWidthValue
 type MediaSource @shareable {
   id: ID!
 }
+
+type SubredditPost implements Post @key(fields: "id") {
+  id: ID!
+  media: Media
+}
