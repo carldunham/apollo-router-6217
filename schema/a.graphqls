@@ -6,68 +6,12 @@ extend schema
     import: ["@key", "@external", "@shareable", "@composeDirective"]
   )
 
-type SDWatchFeed @shareable {
-  elements: ElementConnection
-}
-
-interface Element {
-  id: ID!
-}
-
-type ElementConnection @shareable {
-  edges: [ElementEdge]!
-}
-
-type ElementEdge @shareable {
-  node: Element
-}
-
-type CompactPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CompactPostCommunityRecommendation!]!
-}
-
-type CompactPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type CardPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CardPostCommunityRecommendation!]!
-}
-
-type CardPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type PostConnection @shareable {
-  edges: [PostEdge]!
-}
-
-type PostEdge @shareable {
-  node: Post
-}
-
 interface Post {
   id: ID!
-  media: Media
-}
-
-type Media {
-  still: StillMedia
-}
-
-type StillMedia @shareable {
-  content(maxWidth: MaxWidthValue): MediaSource
-}
-
-scalar MaxWidthValue
-
-type MediaSource @shareable {
-  id: ID!
+  media(maxWidth: Int): String
 }
 
 type SubredditPost implements Post @key(fields: "id") {
   id: ID!
-  media: Media
+  media(maxWidth: Int): String
 }

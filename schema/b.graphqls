@@ -7,62 +7,22 @@ extend schema
   )
 
 type Query {
-  watchFeed: SDWatchFeed
-}
-
-type SDWatchFeed @shareable {
-  elements: ElementConnection
+  watchFeed: [Element!]
 }
 
 interface Element {
-  id: ID!
+  post: Post
 }
 
-type ElementConnection @shareable {
-  edges: [ElementEdge]!
+type CompactPostCommunityRecommendation implements Element {
+  post: Post
 }
 
-type ElementEdge @shareable {
-  node: Element
-}
-
-type CompactPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CompactPostCommunityRecommendation!]!
-}
-
-type CompactPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type CardPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CardPostCommunityRecommendation!]!
-}
-
-type CardPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type PostConnection @shareable {
-  edges: [PostEdge]!
-}
-
-type PostEdge @shareable {
-  node: Post
+type CardPostCommunityRecommendation implements Element {
+  post: Post
 }
 
 interface Post {
-  id: ID!
-}
-
-type StillMedia @shareable {
-  content(maxWidth: MaxWidthValue): MediaSource
-}
-
-scalar MaxWidthValue
-
-type MediaSource @shareable {
   id: ID!
 }
 

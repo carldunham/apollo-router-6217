@@ -46,50 +46,8 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	CardPostCommunityRecommendation struct {
-		Posts func(childComplexity int) int
-	}
-
-	CardPostCommunityRecommendationsFeedUnit struct {
-		CommunityRecommendations func(childComplexity int) int
-		ID                       func(childComplexity int) int
-	}
-
-	CompactPostCommunityRecommendation struct {
-		Posts func(childComplexity int) int
-	}
-
-	CompactPostCommunityRecommendationsFeedUnit struct {
-		CommunityRecommendations func(childComplexity int) int
-		ID                       func(childComplexity int) int
-	}
-
-	ElementConnection struct {
-		Edges func(childComplexity int) int
-	}
-
-	ElementEdge struct {
-		Node func(childComplexity int) int
-	}
-
 	Entity struct {
 		FindSubredditPostByID func(childComplexity int, id string) int
-	}
-
-	Media struct {
-		Still func(childComplexity int) int
-	}
-
-	MediaSource struct {
-		ID func(childComplexity int) int
-	}
-
-	PostConnection struct {
-		Edges func(childComplexity int) int
-	}
-
-	PostEdge struct {
-		Node func(childComplexity int) int
 	}
 
 	Query struct {
@@ -97,17 +55,9 @@ type ComplexityRoot struct {
 		__resolve_entities func(childComplexity int, representations []map[string]interface{}) int
 	}
 
-	SDWatchFeed struct {
-		Elements func(childComplexity int) int
-	}
-
-	StillMedia struct {
-		Content func(childComplexity int, maxWidth *string) int
-	}
-
 	SubredditPost struct {
 		ID    func(childComplexity int) int
-		Media func(childComplexity int) int
+		Media func(childComplexity int, maxWidth *int) int
 	}
 
 	_Service struct {
@@ -138,62 +88,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "CardPostCommunityRecommendation.posts":
-		if e.complexity.CardPostCommunityRecommendation.Posts == nil {
-			break
-		}
-
-		return e.complexity.CardPostCommunityRecommendation.Posts(childComplexity), true
-
-	case "CardPostCommunityRecommendationsFeedUnit.communityRecommendations":
-		if e.complexity.CardPostCommunityRecommendationsFeedUnit.CommunityRecommendations == nil {
-			break
-		}
-
-		return e.complexity.CardPostCommunityRecommendationsFeedUnit.CommunityRecommendations(childComplexity), true
-
-	case "CardPostCommunityRecommendationsFeedUnit.id":
-		if e.complexity.CardPostCommunityRecommendationsFeedUnit.ID == nil {
-			break
-		}
-
-		return e.complexity.CardPostCommunityRecommendationsFeedUnit.ID(childComplexity), true
-
-	case "CompactPostCommunityRecommendation.posts":
-		if e.complexity.CompactPostCommunityRecommendation.Posts == nil {
-			break
-		}
-
-		return e.complexity.CompactPostCommunityRecommendation.Posts(childComplexity), true
-
-	case "CompactPostCommunityRecommendationsFeedUnit.communityRecommendations":
-		if e.complexity.CompactPostCommunityRecommendationsFeedUnit.CommunityRecommendations == nil {
-			break
-		}
-
-		return e.complexity.CompactPostCommunityRecommendationsFeedUnit.CommunityRecommendations(childComplexity), true
-
-	case "CompactPostCommunityRecommendationsFeedUnit.id":
-		if e.complexity.CompactPostCommunityRecommendationsFeedUnit.ID == nil {
-			break
-		}
-
-		return e.complexity.CompactPostCommunityRecommendationsFeedUnit.ID(childComplexity), true
-
-	case "ElementConnection.edges":
-		if e.complexity.ElementConnection.Edges == nil {
-			break
-		}
-
-		return e.complexity.ElementConnection.Edges(childComplexity), true
-
-	case "ElementEdge.node":
-		if e.complexity.ElementEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.ElementEdge.Node(childComplexity), true
-
 	case "Entity.findSubredditPostByID":
 		if e.complexity.Entity.FindSubredditPostByID == nil {
 			break
@@ -205,34 +99,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Entity.FindSubredditPostByID(childComplexity, args["id"].(string)), true
-
-	case "Media.still":
-		if e.complexity.Media.Still == nil {
-			break
-		}
-
-		return e.complexity.Media.Still(childComplexity), true
-
-	case "MediaSource.id":
-		if e.complexity.MediaSource.ID == nil {
-			break
-		}
-
-		return e.complexity.MediaSource.ID(childComplexity), true
-
-	case "PostConnection.edges":
-		if e.complexity.PostConnection.Edges == nil {
-			break
-		}
-
-		return e.complexity.PostConnection.Edges(childComplexity), true
-
-	case "PostEdge.node":
-		if e.complexity.PostEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.PostEdge.Node(childComplexity), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -253,25 +119,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.__resolve_entities(childComplexity, args["representations"].([]map[string]interface{})), true
 
-	case "SDWatchFeed.elements":
-		if e.complexity.SDWatchFeed.Elements == nil {
-			break
-		}
-
-		return e.complexity.SDWatchFeed.Elements(childComplexity), true
-
-	case "StillMedia.content":
-		if e.complexity.StillMedia.Content == nil {
-			break
-		}
-
-		args, err := ec.field_StillMedia_content_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.StillMedia.Content(childComplexity, args["maxWidth"].(*string)), true
-
 	case "SubredditPost.id":
 		if e.complexity.SubredditPost.ID == nil {
 			break
@@ -284,7 +131,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.SubredditPost.Media(childComplexity), true
+		args, err := ec.field_SubredditPost_media_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.SubredditPost.Media(childComplexity, args["maxWidth"].(*int)), true
 
 	case "_Service.sdl":
 		if e.complexity._Service.SDL == nil {
@@ -390,70 +242,14 @@ extend schema
     import: ["@key", "@external", "@shareable", "@composeDirective"]
   )
 
-type SDWatchFeed @shareable {
-  elements: ElementConnection
-}
-
-interface Element {
-  id: ID!
-}
-
-type ElementConnection @shareable {
-  edges: [ElementEdge]!
-}
-
-type ElementEdge @shareable {
-  node: Element
-}
-
-type CompactPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CompactPostCommunityRecommendation!]!
-}
-
-type CompactPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type CardPostCommunityRecommendationsFeedUnit implements Element @shareable {
-  id: ID!
-  communityRecommendations: [CardPostCommunityRecommendation!]!
-}
-
-type CardPostCommunityRecommendation @shareable {
-  posts: PostConnection
-}
-
-type PostConnection @shareable {
-  edges: [PostEdge]!
-}
-
-type PostEdge @shareable {
-  node: Post
-}
-
 interface Post {
   id: ID!
-  media: Media
-}
-
-type Media {
-  still: StillMedia
-}
-
-type StillMedia @shareable {
-  content(maxWidth: MaxWidthValue): MediaSource
-}
-
-scalar MaxWidthValue
-
-type MediaSource @shareable {
-  id: ID!
+  media(maxWidth: Int): String
 }
 
 type SubredditPost implements Post @key(fields: "id") {
   id: ID!
-  media: Media
+  media(maxWidth: Int): String
 }
 `, BuiltIn: false},
 	{Name: "../federation/directives.graphql", Input: `
@@ -628,35 +424,35 @@ func (ec *executionContext) field_Query__entities_argsRepresentations(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_StillMedia_content_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_SubredditPost_media_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_StillMedia_content_argsMaxWidth(ctx, rawArgs)
+	arg0, err := ec.field_SubredditPost_media_argsMaxWidth(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["maxWidth"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_StillMedia_content_argsMaxWidth(
+func (ec *executionContext) field_SubredditPost_media_argsMaxWidth(
 	ctx context.Context,
 	rawArgs map[string]interface{},
-) (*string, error) {
+) (*int, error) {
 	// We won't call the directive if the argument is null.
 	// Set call_argument_directives_with_null to true to call directives
 	// even if the argument is null.
 	_, ok := rawArgs["maxWidth"]
 	if !ok {
-		var zeroVal *string
+		var zeroVal *int
 		return zeroVal, nil
 	}
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("maxWidth"))
 	if tmp, ok := rawArgs["maxWidth"]; ok {
-		return ec.unmarshalOMaxWidthValue2ᚖstring(ctx, tmp)
+		return ec.unmarshalOInt2ᚖint(ctx, tmp)
 	}
 
-	var zeroVal *string
+	var zeroVal *int
 	return zeroVal, nil
 }
 
@@ -732,369 +528,6 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _CardPostCommunityRecommendation_posts(ctx context.Context, field graphql.CollectedField, obj *model.CardPostCommunityRecommendation) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardPostCommunityRecommendation_posts(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Posts, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.PostConnection)
-	fc.Result = res
-	return ec.marshalOPostConnection2ᚖmainᚋgraphᚋmodelᚐPostConnection(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CardPostCommunityRecommendation_posts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CardPostCommunityRecommendation",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "edges":
-				return ec.fieldContext_PostConnection_edges(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type PostConnection", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CardPostCommunityRecommendationsFeedUnit_id(ctx context.Context, field graphql.CollectedField, obj *model.CardPostCommunityRecommendationsFeedUnit) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardPostCommunityRecommendationsFeedUnit_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CardPostCommunityRecommendationsFeedUnit_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CardPostCommunityRecommendationsFeedUnit",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CardPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx context.Context, field graphql.CollectedField, obj *model.CardPostCommunityRecommendationsFeedUnit) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CommunityRecommendations, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.CardPostCommunityRecommendation)
-	fc.Result = res
-	return ec.marshalNCardPostCommunityRecommendation2ᚕᚖmainᚋgraphᚋmodelᚐCardPostCommunityRecommendationᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CardPostCommunityRecommendationsFeedUnit_communityRecommendations(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CardPostCommunityRecommendationsFeedUnit",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "posts":
-				return ec.fieldContext_CardPostCommunityRecommendation_posts(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CardPostCommunityRecommendation", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CompactPostCommunityRecommendation_posts(ctx context.Context, field graphql.CollectedField, obj *model.CompactPostCommunityRecommendation) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CompactPostCommunityRecommendation_posts(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Posts, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.PostConnection)
-	fc.Result = res
-	return ec.marshalOPostConnection2ᚖmainᚋgraphᚋmodelᚐPostConnection(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CompactPostCommunityRecommendation_posts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CompactPostCommunityRecommendation",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "edges":
-				return ec.fieldContext_PostConnection_edges(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type PostConnection", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CompactPostCommunityRecommendationsFeedUnit_id(ctx context.Context, field graphql.CollectedField, obj *model.CompactPostCommunityRecommendationsFeedUnit) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CompactPostCommunityRecommendationsFeedUnit_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CompactPostCommunityRecommendationsFeedUnit_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CompactPostCommunityRecommendationsFeedUnit",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CompactPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx context.Context, field graphql.CollectedField, obj *model.CompactPostCommunityRecommendationsFeedUnit) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CompactPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CommunityRecommendations, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.CompactPostCommunityRecommendation)
-	fc.Result = res
-	return ec.marshalNCompactPostCommunityRecommendation2ᚕᚖmainᚋgraphᚋmodelᚐCompactPostCommunityRecommendationᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CompactPostCommunityRecommendationsFeedUnit_communityRecommendations(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CompactPostCommunityRecommendationsFeedUnit",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "posts":
-				return ec.fieldContext_CompactPostCommunityRecommendation_posts(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type CompactPostCommunityRecommendation", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ElementConnection_edges(ctx context.Context, field graphql.CollectedField, obj *model.ElementConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ElementConnection_edges(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Edges, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.ElementEdge)
-	fc.Result = res
-	return ec.marshalNElementEdge2ᚕᚖmainᚋgraphᚋmodelᚐElementEdge(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ElementConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ElementConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "node":
-				return ec.fieldContext_ElementEdge_node(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ElementEdge", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _ElementEdge_node(ctx context.Context, field graphql.CollectedField, obj *model.ElementEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ElementEdge_node(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Node, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(model.Element)
-	fc.Result = res
-	return ec.marshalOElement2mainᚋgraphᚋmodelᚐElement(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_ElementEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "ElementEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("FieldContext.Child cannot be called on type INTERFACE")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Entity_findSubredditPostByID(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Entity_findSubredditPostByID(ctx, field)
 	if err != nil {
@@ -1152,184 +585,6 @@ func (ec *executionContext) fieldContext_Entity_findSubredditPostByID(ctx contex
 	if fc.Args, err = ec.field_Entity_findSubredditPostByID_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Media_still(ctx context.Context, field graphql.CollectedField, obj *model.Media) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Media_still(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Still, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.StillMedia)
-	fc.Result = res
-	return ec.marshalOStillMedia2ᚖmainᚋgraphᚋmodelᚐStillMedia(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Media_still(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Media",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "content":
-				return ec.fieldContext_StillMedia_content(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type StillMedia", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _MediaSource_id(ctx context.Context, field graphql.CollectedField, obj *model.MediaSource) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_MediaSource_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_MediaSource_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "MediaSource",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _PostConnection_edges(ctx context.Context, field graphql.CollectedField, obj *model.PostConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_PostConnection_edges(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Edges, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.([]*model.PostEdge)
-	fc.Result = res
-	return ec.marshalNPostEdge2ᚕᚖmainᚋgraphᚋmodelᚐPostEdge(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_PostConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "PostConnection",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "node":
-				return ec.fieldContext_PostEdge_node(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type PostEdge", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _PostEdge_node(ctx context.Context, field graphql.CollectedField, obj *model.PostEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_PostEdge_node(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Node, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(model.Post)
-	fc.Result = res
-	return ec.marshalOPost2mainᚋgraphᚋmodelᚐPost(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_PostEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "PostEdge",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("FieldContext.Child cannot be called on type INTERFACE")
-		},
 	}
 	return fc, nil
 }
@@ -1566,107 +821,6 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _SDWatchFeed_elements(ctx context.Context, field graphql.CollectedField, obj *model.SDWatchFeed) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_SDWatchFeed_elements(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Elements, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.ElementConnection)
-	fc.Result = res
-	return ec.marshalOElementConnection2ᚖmainᚋgraphᚋmodelᚐElementConnection(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_SDWatchFeed_elements(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "SDWatchFeed",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "edges":
-				return ec.fieldContext_ElementConnection_edges(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type ElementConnection", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _StillMedia_content(ctx context.Context, field graphql.CollectedField, obj *model.StillMedia) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_StillMedia_content(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Content, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*model.MediaSource)
-	fc.Result = res
-	return ec.marshalOMediaSource2ᚖmainᚋgraphᚋmodelᚐMediaSource(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_StillMedia_content(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "StillMedia",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_MediaSource_id(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type MediaSource", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_StillMedia_content_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _SubredditPost_id(ctx context.Context, field graphql.CollectedField, obj *model.SubredditPost) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_SubredditPost_id(ctx, field)
 	if err != nil {
@@ -1734,24 +888,31 @@ func (ec *executionContext) _SubredditPost_media(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*model.Media)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOMedia2ᚖmainᚋgraphᚋmodelᚐMedia(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_SubredditPost_media(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_SubredditPost_media(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "SubredditPost",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "still":
-				return ec.fieldContext_Media_still(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Media", field.Name)
+			return nil, errors.New("field of type String does not have child fields")
 		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_SubredditPost_media_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -3574,29 +2735,6 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    ************************** interface.gotpl ***************************
 
-func (ec *executionContext) _Element(ctx context.Context, sel ast.SelectionSet, obj model.Element) graphql.Marshaler {
-	switch obj := (obj).(type) {
-	case nil:
-		return graphql.Null
-	case model.CompactPostCommunityRecommendationsFeedUnit:
-		return ec._CompactPostCommunityRecommendationsFeedUnit(ctx, sel, &obj)
-	case *model.CompactPostCommunityRecommendationsFeedUnit:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._CompactPostCommunityRecommendationsFeedUnit(ctx, sel, obj)
-	case model.CardPostCommunityRecommendationsFeedUnit:
-		return ec._CardPostCommunityRecommendationsFeedUnit(ctx, sel, &obj)
-	case *model.CardPostCommunityRecommendationsFeedUnit:
-		if obj == nil {
-			return graphql.Null
-		}
-		return ec._CardPostCommunityRecommendationsFeedUnit(ctx, sel, obj)
-	default:
-		panic(fmt.Errorf("unexpected type %T", obj))
-	}
-}
-
 func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj model.Post) graphql.Marshaler {
 	switch obj := (obj).(type) {
 	case nil:
@@ -3632,241 +2770,6 @@ func (ec *executionContext) __Entity(ctx context.Context, sel ast.SelectionSet, 
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
-
-var cardPostCommunityRecommendationImplementors = []string{"CardPostCommunityRecommendation"}
-
-func (ec *executionContext) _CardPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, obj *model.CardPostCommunityRecommendation) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cardPostCommunityRecommendationImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CardPostCommunityRecommendation")
-		case "posts":
-			out.Values[i] = ec._CardPostCommunityRecommendation_posts(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var cardPostCommunityRecommendationsFeedUnitImplementors = []string{"CardPostCommunityRecommendationsFeedUnit", "Element"}
-
-func (ec *executionContext) _CardPostCommunityRecommendationsFeedUnit(ctx context.Context, sel ast.SelectionSet, obj *model.CardPostCommunityRecommendationsFeedUnit) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cardPostCommunityRecommendationsFeedUnitImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CardPostCommunityRecommendationsFeedUnit")
-		case "id":
-			out.Values[i] = ec._CardPostCommunityRecommendationsFeedUnit_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "communityRecommendations":
-			out.Values[i] = ec._CardPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var compactPostCommunityRecommendationImplementors = []string{"CompactPostCommunityRecommendation"}
-
-func (ec *executionContext) _CompactPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, obj *model.CompactPostCommunityRecommendation) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, compactPostCommunityRecommendationImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CompactPostCommunityRecommendation")
-		case "posts":
-			out.Values[i] = ec._CompactPostCommunityRecommendation_posts(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var compactPostCommunityRecommendationsFeedUnitImplementors = []string{"CompactPostCommunityRecommendationsFeedUnit", "Element"}
-
-func (ec *executionContext) _CompactPostCommunityRecommendationsFeedUnit(ctx context.Context, sel ast.SelectionSet, obj *model.CompactPostCommunityRecommendationsFeedUnit) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, compactPostCommunityRecommendationsFeedUnitImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CompactPostCommunityRecommendationsFeedUnit")
-		case "id":
-			out.Values[i] = ec._CompactPostCommunityRecommendationsFeedUnit_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "communityRecommendations":
-			out.Values[i] = ec._CompactPostCommunityRecommendationsFeedUnit_communityRecommendations(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var elementConnectionImplementors = []string{"ElementConnection"}
-
-func (ec *executionContext) _ElementConnection(ctx context.Context, sel ast.SelectionSet, obj *model.ElementConnection) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, elementConnectionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ElementConnection")
-		case "edges":
-			out.Values[i] = ec._ElementConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var elementEdgeImplementors = []string{"ElementEdge"}
-
-func (ec *executionContext) _ElementEdge(ctx context.Context, sel ast.SelectionSet, obj *model.ElementEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, elementEdgeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ElementEdge")
-		case "node":
-			out.Values[i] = ec._ElementEdge_node(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
 
 var entityImplementors = []string{"Entity"}
 
@@ -3909,156 +2812,6 @@ func (ec *executionContext) _Entity(ctx context.Context, sel ast.SelectionSet) g
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var mediaImplementors = []string{"Media"}
-
-func (ec *executionContext) _Media(ctx context.Context, sel ast.SelectionSet, obj *model.Media) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, mediaImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("Media")
-		case "still":
-			out.Values[i] = ec._Media_still(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var mediaSourceImplementors = []string{"MediaSource"}
-
-func (ec *executionContext) _MediaSource(ctx context.Context, sel ast.SelectionSet, obj *model.MediaSource) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, mediaSourceImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("MediaSource")
-		case "id":
-			out.Values[i] = ec._MediaSource_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var postConnectionImplementors = []string{"PostConnection"}
-
-func (ec *executionContext) _PostConnection(ctx context.Context, sel ast.SelectionSet, obj *model.PostConnection) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, postConnectionImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("PostConnection")
-		case "edges":
-			out.Values[i] = ec._PostConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var postEdgeImplementors = []string{"PostEdge"}
-
-func (ec *executionContext) _PostEdge(ctx context.Context, sel ast.SelectionSet, obj *model.PostEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, postEdgeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("PostEdge")
-		case "node":
-			out.Values[i] = ec._PostEdge_node(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4153,78 +2906,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Query___schema(ctx, field)
 			})
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var sDWatchFeedImplementors = []string{"SDWatchFeed"}
-
-func (ec *executionContext) _SDWatchFeed(ctx context.Context, sel ast.SelectionSet, obj *model.SDWatchFeed) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, sDWatchFeedImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("SDWatchFeed")
-		case "elements":
-			out.Values[i] = ec._SDWatchFeed_elements(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var stillMediaImplementors = []string{"StillMedia"}
-
-func (ec *executionContext) _StillMedia(ctx context.Context, sel ast.SelectionSet, obj *model.StillMedia) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, stillMediaImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("StillMedia")
-		case "content":
-			out.Values[i] = ec._StillMedia_content(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4666,152 +3347,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCardPostCommunityRecommendation2ᚕᚖmainᚋgraphᚋmodelᚐCardPostCommunityRecommendationᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.CardPostCommunityRecommendation) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNCardPostCommunityRecommendation2ᚖmainᚋgraphᚋmodelᚐCardPostCommunityRecommendation(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNCardPostCommunityRecommendation2ᚖmainᚋgraphᚋmodelᚐCardPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, v *model.CardPostCommunityRecommendation) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._CardPostCommunityRecommendation(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNCompactPostCommunityRecommendation2ᚕᚖmainᚋgraphᚋmodelᚐCompactPostCommunityRecommendationᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.CompactPostCommunityRecommendation) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNCompactPostCommunityRecommendation2ᚖmainᚋgraphᚋmodelᚐCompactPostCommunityRecommendation(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNCompactPostCommunityRecommendation2ᚖmainᚋgraphᚋmodelᚐCompactPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, v *model.CompactPostCommunityRecommendation) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._CompactPostCommunityRecommendation(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNElementEdge2ᚕᚖmainᚋgraphᚋmodelᚐElementEdge(ctx context.Context, sel ast.SelectionSet, v []*model.ElementEdge) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOElementEdge2ᚖmainᚋgraphᚋmodelᚐElementEdge(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
 func (ec *executionContext) unmarshalNFieldSet2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -4840,44 +3375,6 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) marshalNPostEdge2ᚕᚖmainᚋgraphᚋmodelᚐPostEdge(ctx context.Context, sel ast.SelectionSet, v []*model.PostEdge) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOPostEdge2ᚖmainᚋgraphᚋmodelᚐPostEdge(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -5441,83 +3938,20 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOElement2mainᚋgraphᚋmodelᚐElement(ctx context.Context, sel ast.SelectionSet, v model.Element) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Element(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOElementConnection2ᚖmainᚋgraphᚋmodelᚐElementConnection(ctx context.Context, sel ast.SelectionSet, v *model.ElementConnection) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._ElementConnection(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOElementEdge2ᚖmainᚋgraphᚋmodelᚐElementEdge(ctx context.Context, sel ast.SelectionSet, v *model.ElementEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._ElementEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOMaxWidthValue2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
+func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := graphql.UnmarshalString(v)
+	res, err := graphql.UnmarshalInt(v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOMaxWidthValue2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
+func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
-	res := graphql.MarshalString(*v)
+	res := graphql.MarshalInt(*v)
 	return res
-}
-
-func (ec *executionContext) marshalOMedia2ᚖmainᚋgraphᚋmodelᚐMedia(ctx context.Context, sel ast.SelectionSet, v *model.Media) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Media(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOMediaSource2ᚖmainᚋgraphᚋmodelᚐMediaSource(ctx context.Context, sel ast.SelectionSet, v *model.MediaSource) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._MediaSource(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOPost2mainᚋgraphᚋmodelᚐPost(ctx context.Context, sel ast.SelectionSet, v model.Post) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Post(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOPostConnection2ᚖmainᚋgraphᚋmodelᚐPostConnection(ctx context.Context, sel ast.SelectionSet, v *model.PostConnection) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._PostConnection(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOPostEdge2ᚖmainᚋgraphᚋmodelᚐPostEdge(ctx context.Context, sel ast.SelectionSet, v *model.PostEdge) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._PostEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOStillMedia2ᚖmainᚋgraphᚋmodelᚐStillMedia(ctx context.Context, sel ast.SelectionSet, v *model.StillMedia) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._StillMedia(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

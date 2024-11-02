@@ -1,51 +1,24 @@
-query Test6217($include1: Boolean = true, $include2: Boolean = true) {
-  test6217 {
-    elements {
-      edges {
-        __typename
-        node {
-          ...frag1 @include(if: $include1)
-          ...frag2 @include(if: $include2)
-        }
-      }
+query WatchFeedSdui($include1: Boolean = false, $include2: Boolean = false) {
+  watchFeed {
+    ...frag1 @include(if: $include1)
+    ...frag2 @include(if: $include2)
+  }
+}
+
+fragment frag1 on CompactPostCommunityRecommendationsFeedUnit {
+  id
+  communityRecommendations {
+    posts {
+      media(maxWidth: 216)
     }
   }
 }
 
-fragment frag1 on A {
+fragment frag2 on CardPostCommunityRecommendationsFeedUnit {
   id
-  things {
-    parts {
-      edges {
-        node {
-          media {
-            still {
-              content(maxWidth: 216) {
-                __typename
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-fragment frag2 on B {
-  id
-  things {
-    parts {
-      edges {
-        node {
-          media {
-            still {
-              content(maxWidth: 640) {
-                __typename
-              }
-            }
-          }
-        }
-      }
+  communityRecommendations {
+    posts {
+      media(maxWidth: 640)
     }
   }
 }

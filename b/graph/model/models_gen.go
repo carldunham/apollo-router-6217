@@ -4,7 +4,7 @@ package model
 
 type Element interface {
 	IsElement()
-	GetID() string
+	GetPost() Post
 }
 
 type Post interface {
@@ -13,58 +13,20 @@ type Post interface {
 }
 
 type CardPostCommunityRecommendation struct {
-	Posts *PostConnection `json:"posts,omitempty"`
+	Post Post `json:"post,omitempty"`
 }
 
-type CardPostCommunityRecommendationsFeedUnit struct {
-	ID                       string                             `json:"id"`
-	CommunityRecommendations []*CardPostCommunityRecommendation `json:"communityRecommendations"`
-}
-
-func (CardPostCommunityRecommendationsFeedUnit) IsElement()         {}
-func (this CardPostCommunityRecommendationsFeedUnit) GetID() string { return this.ID }
+func (CardPostCommunityRecommendation) IsElement()         {}
+func (this CardPostCommunityRecommendation) GetPost() Post { return this.Post }
 
 type CompactPostCommunityRecommendation struct {
-	Posts *PostConnection `json:"posts,omitempty"`
+	Post Post `json:"post,omitempty"`
 }
 
-type CompactPostCommunityRecommendationsFeedUnit struct {
-	ID                       string                                `json:"id"`
-	CommunityRecommendations []*CompactPostCommunityRecommendation `json:"communityRecommendations"`
-}
-
-func (CompactPostCommunityRecommendationsFeedUnit) IsElement()         {}
-func (this CompactPostCommunityRecommendationsFeedUnit) GetID() string { return this.ID }
-
-type ElementConnection struct {
-	Edges []*ElementEdge `json:"edges"`
-}
-
-type ElementEdge struct {
-	Node Element `json:"node,omitempty"`
-}
-
-type MediaSource struct {
-	ID string `json:"id"`
-}
-
-type PostConnection struct {
-	Edges []*PostEdge `json:"edges"`
-}
-
-type PostEdge struct {
-	Node Post `json:"node,omitempty"`
-}
+func (CompactPostCommunityRecommendation) IsElement()         {}
+func (this CompactPostCommunityRecommendation) GetPost() Post { return this.Post }
 
 type Query struct {
-}
-
-type SDWatchFeed struct {
-	Elements *ElementConnection `json:"elements,omitempty"`
-}
-
-type StillMedia struct {
-	Content *MediaSource `json:"content,omitempty"`
 }
 
 type SubredditPost struct {

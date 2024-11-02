@@ -11,7 +11,7 @@ import (
 )
 
 // WatchFeed is the resolver for the watchFeed field.
-func (r *queryResolver) WatchFeed(ctx context.Context) (*model.SDWatchFeed, error) {
+func (r *queryResolver) WatchFeed(ctx context.Context) ([]model.Element, error) {
 	panic(fmt.Errorf("not implemented: WatchFeed - watchFeed"))
 }
 

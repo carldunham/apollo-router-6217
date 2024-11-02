@@ -15,59 +15,24 @@ directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boole
 
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
-type CardPostCommunityRecommendation
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  posts: PostConnection
-}
-
-type CardPostCommunityRecommendationsFeedUnit implements Element
-  @join__implements(graph: A, interface: "Element")
+type CardPostCommunityRecommendation implements Element
   @join__implements(graph: B, interface: "Element")
-  @join__type(graph: A)
   @join__type(graph: B)
 {
-  id: ID!
-  communityRecommendations: [CardPostCommunityRecommendation!]!
+  post: Post
 }
 
-type CompactPostCommunityRecommendation
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  posts: PostConnection
-}
-
-type CompactPostCommunityRecommendationsFeedUnit implements Element
-  @join__implements(graph: A, interface: "Element")
+type CompactPostCommunityRecommendation implements Element
   @join__implements(graph: B, interface: "Element")
-  @join__type(graph: A)
   @join__type(graph: B)
 {
-  id: ID!
-  communityRecommendations: [CompactPostCommunityRecommendation!]!
+  post: Post
 }
 
 interface Element
-  @join__type(graph: A)
   @join__type(graph: B)
 {
-  id: ID!
-}
-
-type ElementConnection
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  edges: [ElementEdge]!
-}
-
-type ElementEdge
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  node: Element
+  post: Post
 }
 
 scalar join__FieldSet
@@ -91,64 +56,19 @@ enum link__Purpose {
   EXECUTION
 }
 
-scalar MaxWidthValue
-  @join__type(graph: A)
-  @join__type(graph: B)
-
-type Media
-  @join__type(graph: A)
-{
-  still: StillMedia
-}
-
-type MediaSource
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  id: ID!
-}
-
 interface Post
   @join__type(graph: A)
   @join__type(graph: B)
 {
   id: ID!
-  media: Media @join__field(graph: A)
-}
-
-type PostConnection
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  edges: [PostEdge]!
-}
-
-type PostEdge
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  node: Post
+  media(maxWidth: Int): String @join__field(graph: A)
 }
 
 type Query
   @join__type(graph: A)
   @join__type(graph: B)
 {
-  watchFeed: SDWatchFeed @join__field(graph: B)
-}
-
-type SDWatchFeed
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  elements: ElementConnection
-}
-
-type StillMedia
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  content(maxWidth: MaxWidthValue): MediaSource
+  watchFeed: [Element!] @join__field(graph: B)
 }
 
 type SubredditPost implements Post
@@ -158,5 +78,5 @@ type SubredditPost implements Post
   @join__type(graph: B, key: "id")
 {
   id: ID!
-  media: Media @join__field(graph: A)
+  media(maxWidth: Int): String @join__field(graph: A)
 }
