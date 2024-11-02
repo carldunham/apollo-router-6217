@@ -7,7 +7,7 @@ extend schema
   )
 
 type Query {
-  watchFeed: [Element!]
+  posts: [Element!]
 }
 
 interface Element {
@@ -26,6 +26,6 @@ interface Post {
   id: ID!
 }
 
-type SubredditPost implements Post @key(fields: "id") {
+type SimplePost implements Post @key(fields: "id") {
   id: ID!
 }

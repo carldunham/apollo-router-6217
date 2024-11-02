@@ -29,11 +29,11 @@ func (this Full) GetPost() Post { return this.Post }
 type Query struct {
 }
 
-type SubredditPost struct {
+type SimplePost struct {
 	ID string `json:"id"`
 }
 
-func (SubredditPost) IsPost()            {}
-func (this SubredditPost) GetID() string { return this.ID }
+func (SimplePost) IsPost()            {}
+func (this SimplePost) GetID() string { return this.ID }
 
-func (SubredditPost) IsEntity() {}
+func (SimplePost) IsEntity() {}

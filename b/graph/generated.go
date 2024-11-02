@@ -52,7 +52,7 @@ type ComplexityRoot struct {
 	}
 
 	Entity struct {
-		FindSubredditPostByID func(childComplexity int, id string) int
+		FindSimplePostByID func(childComplexity int, id string) int
 	}
 
 	Full struct {
@@ -60,12 +60,12 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		WatchFeed          func(childComplexity int) int
+		Posts              func(childComplexity int) int
 		__resolve__service func(childComplexity int) int
 		__resolve_entities func(childComplexity int, representations []map[string]interface{}) int
 	}
 
-	SubredditPost struct {
+	SimplePost struct {
 		ID func(childComplexity int) int
 	}
 
@@ -75,10 +75,10 @@ type ComplexityRoot struct {
 }
 
 type EntityResolver interface {
-	FindSubredditPostByID(ctx context.Context, id string) (*model.SubredditPost, error)
+	FindSimplePostByID(ctx context.Context, id string) (*model.SimplePost, error)
 }
 type QueryResolver interface {
-	WatchFeed(ctx context.Context) ([]model.Element, error)
+	Posts(ctx context.Context) ([]model.Element, error)
 }
 
 type executableSchema struct {
@@ -107,17 +107,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Compact.Post(childComplexity), true
 
-	case "Entity.findSubredditPostByID":
-		if e.complexity.Entity.FindSubredditPostByID == nil {
+	case "Entity.findSimplePostByID":
+		if e.complexity.Entity.FindSimplePostByID == nil {
 			break
 		}
 
-		args, err := ec.field_Entity_findSubredditPostByID_args(context.TODO(), rawArgs)
+		args, err := ec.field_Entity_findSimplePostByID_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Entity.FindSubredditPostByID(childComplexity, args["id"].(string)), true
+		return e.complexity.Entity.FindSimplePostByID(childComplexity, args["id"].(string)), true
 
 	case "Full.post":
 		if e.complexity.Full.Post == nil {
@@ -126,12 +126,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Full.Post(childComplexity), true
 
-	case "Query.watchFeed":
-		if e.complexity.Query.WatchFeed == nil {
+	case "Query.posts":
+		if e.complexity.Query.Posts == nil {
 			break
 		}
 
-		return e.complexity.Query.WatchFeed(childComplexity), true
+		return e.complexity.Query.Posts(childComplexity), true
 
 	case "Query._service":
 		if e.complexity.Query.__resolve__service == nil {
@@ -152,12 +152,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.__resolve_entities(childComplexity, args["representations"].([]map[string]interface{})), true
 
-	case "SubredditPost.id":
-		if e.complexity.SubredditPost.ID == nil {
+	case "SimplePost.id":
+		if e.complexity.SimplePost.ID == nil {
 			break
 		}
 
-		return e.complexity.SubredditPost.ID(childComplexity), true
+		return e.complexity.SimplePost.ID(childComplexity), true
 
 	case "_Service.sdl":
 		if e.complexity._Service.SDL == nil {
@@ -264,7 +264,7 @@ extend schema
   )
 
 type Query {
-  watchFeed: [Element!]
+  posts: [Element!]
 }
 
 interface Element {
@@ -283,7 +283,7 @@ interface Post {
   id: ID!
 }
 
-type SubredditPost implements Post @key(fields: "id") {
+type SimplePost implements Post @key(fields: "id") {
   id: ID!
 }
 `, BuiltIn: false},
@@ -340,11 +340,11 @@ type SubredditPost implements Post @key(fields: "id") {
 `, BuiltIn: true},
 	{Name: "../federation/entity.graphql", Input: `
 # a union of all types that use the @key directive
-union _Entity = SubredditPost
+union _Entity = SimplePost
 
 # fake type to build resolver interfaces for users to implement
 type Entity {
-	findSubredditPostByID(id: ID!,): SubredditPost!
+	findSimplePostByID(id: ID!,): SimplePost!
 }
 
 type _Service {
@@ -363,17 +363,17 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Entity_findSubredditPostByID_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Entity_findSimplePostByID_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	arg0, err := ec.field_Entity_findSubredditPostByID_argsID(ctx, rawArgs)
+	arg0, err := ec.field_Entity_findSimplePostByID_argsID(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["id"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Entity_findSubredditPostByID_argsID(
+func (ec *executionContext) field_Entity_findSimplePostByID_argsID(
 	ctx context.Context,
 	rawArgs map[string]interface{},
 ) (string, error) {
@@ -572,8 +572,8 @@ func (ec *executionContext) fieldContext_Compact_post(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Entity_findSubredditPostByID(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Entity_findSubredditPostByID(ctx, field)
+func (ec *executionContext) _Entity_findSimplePostByID(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Entity_findSimplePostByID(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -586,7 +586,7 @@ func (ec *executionContext) _Entity_findSubredditPostByID(ctx context.Context, f
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Entity().FindSubredditPostByID(rctx, fc.Args["id"].(string))
+		return ec.resolvers.Entity().FindSimplePostByID(rctx, fc.Args["id"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -598,12 +598,12 @@ func (ec *executionContext) _Entity_findSubredditPostByID(ctx context.Context, f
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.SubredditPost)
+	res := resTmp.(*model.SimplePost)
 	fc.Result = res
-	return ec.marshalNSubredditPost2ᚖmainᚋgraphᚋmodelᚐSubredditPost(ctx, field.Selections, res)
+	return ec.marshalNSimplePost2ᚖmainᚋgraphᚋmodelᚐSimplePost(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Entity_findSubredditPostByID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Entity_findSimplePostByID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Entity",
 		Field:      field,
@@ -612,9 +612,9 @@ func (ec *executionContext) fieldContext_Entity_findSubredditPostByID(ctx contex
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_SubredditPost_id(ctx, field)
+				return ec.fieldContext_SimplePost_id(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type SubredditPost", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type SimplePost", field.Name)
 		},
 	}
 	defer func() {
@@ -624,7 +624,7 @@ func (ec *executionContext) fieldContext_Entity_findSubredditPostByID(ctx contex
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Entity_findSubredditPostByID_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Entity_findSimplePostByID_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -672,8 +672,8 @@ func (ec *executionContext) fieldContext_Full_post(_ context.Context, field grap
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_watchFeed(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_watchFeed(ctx, field)
+func (ec *executionContext) _Query_posts(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_posts(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -686,7 +686,7 @@ func (ec *executionContext) _Query_watchFeed(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().WatchFeed(rctx)
+		return ec.resolvers.Query().Posts(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -700,7 +700,7 @@ func (ec *executionContext) _Query_watchFeed(ctx context.Context, field graphql.
 	return ec.marshalOElement2ᚕmainᚋgraphᚋmodelᚐElementᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_watchFeed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_posts(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -945,8 +945,8 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _SubredditPost_id(ctx context.Context, field graphql.CollectedField, obj *model.SubredditPost) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_SubredditPost_id(ctx, field)
+func (ec *executionContext) _SimplePost_id(ctx context.Context, field graphql.CollectedField, obj *model.SimplePost) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimplePost_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -976,9 +976,9 @@ func (ec *executionContext) _SubredditPost_id(ctx context.Context, field graphql
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_SubredditPost_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_SimplePost_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "SubredditPost",
+		Object:     "SimplePost",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -2834,13 +2834,13 @@ func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
-	case model.SubredditPost:
-		return ec._SubredditPost(ctx, sel, &obj)
-	case *model.SubredditPost:
+	case model.SimplePost:
+		return ec._SimplePost(ctx, sel, &obj)
+	case *model.SimplePost:
 		if obj == nil {
 			return graphql.Null
 		}
-		return ec._SubredditPost(ctx, sel, obj)
+		return ec._SimplePost(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -2850,13 +2850,13 @@ func (ec *executionContext) __Entity(ctx context.Context, sel ast.SelectionSet, 
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
-	case model.SubredditPost:
-		return ec._SubredditPost(ctx, sel, &obj)
-	case *model.SubredditPost:
+	case model.SimplePost:
+		return ec._SimplePost(ctx, sel, &obj)
+	case *model.SimplePost:
 		if obj == nil {
 			return graphql.Null
 		}
-		return ec._SubredditPost(ctx, sel, obj)
+		return ec._SimplePost(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -2921,7 +2921,7 @@ func (ec *executionContext) _Entity(ctx context.Context, sel ast.SelectionSet) g
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Entity")
-		case "findSubredditPostByID":
+		case "findSimplePostByID":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -2930,7 +2930,7 @@ func (ec *executionContext) _Entity(ctx context.Context, sel ast.SelectionSet) g
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Entity_findSubredditPostByID(ctx, field)
+				res = ec._Entity_findSimplePostByID(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -3021,7 +3021,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "watchFeed":
+		case "posts":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -3030,7 +3030,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_watchFeed(ctx, field)
+				res = ec._Query_posts(ctx, field)
 				return res
 			}
 
@@ -3115,19 +3115,19 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var subredditPostImplementors = []string{"SubredditPost", "Post", "_Entity"}
+var simplePostImplementors = []string{"SimplePost", "Post", "_Entity"}
 
-func (ec *executionContext) _SubredditPost(ctx context.Context, sel ast.SelectionSet, obj *model.SubredditPost) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, subredditPostImplementors)
+func (ec *executionContext) _SimplePost(ctx context.Context, sel ast.SelectionSet, obj *model.SimplePost) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, simplePostImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("SubredditPost")
+			out.Values[i] = graphql.MarshalString("SimplePost")
 		case "id":
-			out.Values[i] = ec._SubredditPost_id(ctx, field, obj)
+			out.Values[i] = ec._SimplePost_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3571,6 +3571,20 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
+func (ec *executionContext) marshalNSimplePost2mainᚋgraphᚋmodelᚐSimplePost(ctx context.Context, sel ast.SelectionSet, v model.SimplePost) graphql.Marshaler {
+	return ec._SimplePost(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNSimplePost2ᚖmainᚋgraphᚋmodelᚐSimplePost(ctx context.Context, sel ast.SelectionSet, v *model.SimplePost) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._SimplePost(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3584,20 +3598,6 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) marshalNSubredditPost2mainᚋgraphᚋmodelᚐSubredditPost(ctx context.Context, sel ast.SelectionSet, v model.SubredditPost) graphql.Marshaler {
-	return ec._SubredditPost(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNSubredditPost2ᚖmainᚋgraphᚋmodelᚐSubredditPost(ctx context.Context, sel ast.SelectionSet, v *model.SubredditPost) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._SubredditPost(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalN_Any2map(ctx context.Context, v interface{}) (map[string]interface{}, error) {

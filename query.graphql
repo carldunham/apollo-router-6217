@@ -1,12 +1,12 @@
 query Broken($full: Boolean = true) {
-  watchFeed {
+  posts {
     ...compactView
     ...fullView @include(if: $full)
   }
 }
 
 query Works {
-  watchFeed {
+  posts {
     ...compactView
     ...fullView
   }

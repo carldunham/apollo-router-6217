@@ -9,16 +9,16 @@ import (
 	"main/graph/model"
 )
 
-// WatchFeed is the resolver for the watchFeed field.
-func (r *queryResolver) WatchFeed(ctx context.Context) ([]model.Element, error) {
+// Posts is the resolver for the posts field.
+func (r *queryResolver) Posts(ctx context.Context) ([]model.Element, error) {
 	return []model.Element{
 		&model.Compact{
-			Post: &model.SubredditPost{
+			Post: &model.SimplePost{
 				ID: "1",
 			},
 		},
 		&model.Full{
-			Post: &model.SubredditPost{
+			Post: &model.SimplePost{
 				ID: "1",
 			},
 		},

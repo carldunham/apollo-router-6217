@@ -153,21 +153,21 @@ func (ec *executionContext) resolveEntity(
 	}()
 
 	switch typeName {
-	case "SubredditPost":
-		resolverName, err := entityResolverNameForSubredditPost(ctx, rep)
+	case "SimplePost":
+		resolverName, err := entityResolverNameForSimplePost(ctx, rep)
 		if err != nil {
-			return nil, fmt.Errorf(`finding resolver for Entity "SubredditPost": %w`, err)
+			return nil, fmt.Errorf(`finding resolver for Entity "SimplePost": %w`, err)
 		}
 		switch resolverName {
 
-		case "findSubredditPostByID":
+		case "findSimplePostByID":
 			id0, err := ec.unmarshalNID2string(ctx, rep["id"])
 			if err != nil {
-				return nil, fmt.Errorf(`unmarshalling param 0 for findSubredditPostByID(): %w`, err)
+				return nil, fmt.Errorf(`unmarshalling param 0 for findSimplePostByID(): %w`, err)
 			}
-			entity, err := ec.resolvers.Entity().FindSubredditPostByID(ctx, id0)
+			entity, err := ec.resolvers.Entity().FindSimplePostByID(ctx, id0)
 			if err != nil {
-				return nil, fmt.Errorf(`resolving Entity "SubredditPost": %w`, err)
+				return nil, fmt.Errorf(`resolving Entity "SimplePost": %w`, err)
 			}
 
 			return entity, nil
@@ -198,7 +198,7 @@ func (ec *executionContext) resolveManyEntities(
 	}
 }
 
-func entityResolverNameForSubredditPost(ctx context.Context, rep EntityRepresentation) (string, error) {
+func entityResolverNameForSimplePost(ctx context.Context, rep EntityRepresentation) (string, error) {
 	for {
 		var (
 			m   EntityRepresentation
@@ -220,7 +220,7 @@ func entityResolverNameForSubredditPost(ctx context.Context, rep EntityRepresent
 		if allNull {
 			break
 		}
-		return "findSubredditPostByID", nil
+		return "findSimplePostByID", nil
 	}
-	return "", fmt.Errorf("%w for SubredditPost", ErrTypeNotFound)
+	return "", fmt.Errorf("%w for SimplePost", ErrTypeNotFound)
 }

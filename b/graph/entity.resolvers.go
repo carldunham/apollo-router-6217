@@ -6,12 +6,13 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"main/graph/model"
 )
 
-// FindSubredditPostByID is the resolver for the findSubredditPostByID field.
-func (r *entityResolver) FindSubredditPostByID(ctx context.Context, id string) (*model.SubredditPost, error) {
-	return &model.SubredditPost{ID: id}, nil
+// FindSimplePostByID is the resolver for the findSimplePostByID field.
+func (r *entityResolver) FindSimplePostByID(ctx context.Context, id string) (*model.SimplePost, error) {
+	panic(fmt.Errorf("not implemented: FindSimplePostByID - findSimplePostByID"))
 }
 
 // Entity returns EntityResolver implementation.

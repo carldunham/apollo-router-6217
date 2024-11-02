@@ -68,10 +68,10 @@ type Query
   @join__type(graph: A)
   @join__type(graph: B)
 {
-  watchFeed: [Element!] @join__field(graph: B)
+  posts: [Element!] @join__field(graph: B)
 }
 
-type SubredditPost implements Post
+type SimplePost implements Post
   @join__implements(graph: A, interface: "Post")
   @join__implements(graph: B, interface: "Post")
   @join__type(graph: A, key: "id")

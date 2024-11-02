@@ -9,10 +9,10 @@ import (
 	"main/graph/model"
 )
 
-// FindSubredditPostByID is the resolver for the findSubredditPostByID field.
-func (r *entityResolver) FindSubredditPostByID(ctx context.Context, id string) (*model.SubredditPost, error) {
+// FindSimplePostByID is the resolver for the findSimplePostByID field.
+func (r *entityResolver) FindSimplePostByID(ctx context.Context, id string) (*model.SimplePost, error) {
 	name := "something"
-	return &model.SubredditPost{ID: id, Media: &name}, nil
+	return &model.SimplePost{ID: id, Media: &name}, nil
 }
 
 // Entity returns EntityResolver implementation.

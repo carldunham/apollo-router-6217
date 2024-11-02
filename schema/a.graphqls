@@ -11,7 +11,7 @@ interface Post {
   media(maxWidth: Int): String
 }
 
-type SubredditPost implements Post @key(fields: "id") {
+type SimplePost implements Post @key(fields: "id") {
   id: ID!
   media(maxWidth: Int): String
 }

@@ -11,13 +11,13 @@ type Post interface {
 type Query struct {
 }
 
-type SubredditPost struct {
+type SimplePost struct {
 	ID    string  `json:"id"`
 	Media *string `json:"media,omitempty"`
 }
 
-func (SubredditPost) IsPost()                {}
-func (this SubredditPost) GetID() string     { return this.ID }
-func (this SubredditPost) GetMedia() *string { return this.Media }
+func (SimplePost) IsPost()                {}
+func (this SimplePost) GetID() string     { return this.ID }
+func (this SimplePost) GetMedia() *string { return this.Media }
 
-func (SubredditPost) IsEntity() {}
+func (SimplePost) IsEntity() {}
