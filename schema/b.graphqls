@@ -1,0 +1,25 @@
+# B
+
+type Query {
+  posts: [Element!]
+}
+
+interface Element {
+  post: Post
+}
+
+type Compact implements Element {
+  post: Post
+}
+
+type Full implements Element {
+  post: Post
+}
+
+interface Post {
+  id: ID!
+}
+
+type SimplePost implements Post @key(fields: "id") {
+  id: ID!
+}

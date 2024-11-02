@@ -1,0 +1,13 @@
+# A
+
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@key"])
+
+interface Post {
+  id: ID!
+  media(maxWidth: Int): String
+}
+
+type SimplePost implements Post @key(fields: "id") {
+  id: ID!
+  media(maxWidth: Int): String
+}
