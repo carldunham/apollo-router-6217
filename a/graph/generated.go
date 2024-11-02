@@ -236,11 +236,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var sources = []*ast.Source{
 	{Name: "../../schema/a.graphqls", Input: `# A
 
-extend schema
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.2"
-    import: ["@key", "@external", "@shareable", "@composeDirective"]
-  )
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@key"])
 
 interface Post {
   id: ID!
