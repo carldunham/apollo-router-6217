@@ -1,24 +1,25 @@
-query WatchFeedSdui($include1: Boolean = false, $include2: Boolean = false) {
+query Broken($full: Boolean = true) {
   watchFeed {
-    ...frag1 @include(if: $include1)
-    ...frag2 @include(if: $include2)
+    ...compactView
+    ...fullView @include(if: $full)
   }
 }
 
-fragment frag1 on CompactPostCommunityRecommendationsFeedUnit {
-  id
-  communityRecommendations {
-    posts {
-      media(maxWidth: 216)
-    }
+query Works {
+  watchFeed {
+    ...compactView
+    ...fullView
   }
 }
 
-fragment frag2 on CardPostCommunityRecommendationsFeedUnit {
-  id
-  communityRecommendations {
-    posts {
-      media(maxWidth: 640)
-    }
+fragment compactView on Compact {
+  post {
+    media(maxWidth: 216)
+  }
+}
+
+fragment fullView on Full {
+  post {
+    media(maxWidth: 640)
   }
 }

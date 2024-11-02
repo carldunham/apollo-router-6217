@@ -47,16 +47,16 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	CardPostCommunityRecommendation struct {
-		Post func(childComplexity int) int
-	}
-
-	CompactPostCommunityRecommendation struct {
+	Compact struct {
 		Post func(childComplexity int) int
 	}
 
 	Entity struct {
 		FindSubredditPostByID func(childComplexity int, id string) int
+	}
+
+	Full struct {
+		Post func(childComplexity int) int
 	}
 
 	Query struct {
@@ -100,19 +100,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "CardPostCommunityRecommendation.post":
-		if e.complexity.CardPostCommunityRecommendation.Post == nil {
+	case "Compact.post":
+		if e.complexity.Compact.Post == nil {
 			break
 		}
 
-		return e.complexity.CardPostCommunityRecommendation.Post(childComplexity), true
-
-	case "CompactPostCommunityRecommendation.post":
-		if e.complexity.CompactPostCommunityRecommendation.Post == nil {
-			break
-		}
-
-		return e.complexity.CompactPostCommunityRecommendation.Post(childComplexity), true
+		return e.complexity.Compact.Post(childComplexity), true
 
 	case "Entity.findSubredditPostByID":
 		if e.complexity.Entity.FindSubredditPostByID == nil {
@@ -125,6 +118,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Entity.FindSubredditPostByID(childComplexity, args["id"].(string)), true
+
+	case "Full.post":
+		if e.complexity.Full.Post == nil {
+			break
+		}
+
+		return e.complexity.Full.Post(childComplexity), true
 
 	case "Query.watchFeed":
 		if e.complexity.Query.WatchFeed == nil {
@@ -271,11 +271,11 @@ interface Element {
   post: Post
 }
 
-type CompactPostCommunityRecommendation implements Element {
+type Compact implements Element {
   post: Post
 }
 
-type CardPostCommunityRecommendation implements Element {
+type Full implements Element {
   post: Post
 }
 
@@ -531,8 +531,8 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _CardPostCommunityRecommendation_post(ctx context.Context, field graphql.CollectedField, obj *model.CardPostCommunityRecommendation) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CardPostCommunityRecommendation_post(ctx, field)
+func (ec *executionContext) _Compact_post(ctx context.Context, field graphql.CollectedField, obj *model.Compact) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Compact_post(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -559,50 +559,9 @@ func (ec *executionContext) _CardPostCommunityRecommendation_post(ctx context.Co
 	return ec.marshalOPost2mainᚋgraphᚋmodelᚐPost(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_CardPostCommunityRecommendation_post(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Compact_post(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "CardPostCommunityRecommendation",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("FieldContext.Child cannot be called on type INTERFACE")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _CompactPostCommunityRecommendation_post(ctx context.Context, field graphql.CollectedField, obj *model.CompactPostCommunityRecommendation) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_CompactPostCommunityRecommendation_post(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Post, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(model.Post)
-	fc.Result = res
-	return ec.marshalOPost2mainᚋgraphᚋmodelᚐPost(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_CompactPostCommunityRecommendation_post(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "CompactPostCommunityRecommendation",
+		Object:     "Compact",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -668,6 +627,47 @@ func (ec *executionContext) fieldContext_Entity_findSubredditPostByID(ctx contex
 	if fc.Args, err = ec.field_Entity_findSubredditPostByID_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Full_post(ctx context.Context, field graphql.CollectedField, obj *model.Full) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Full_post(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Post, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(model.Post)
+	fc.Result = res
+	return ec.marshalOPost2mainᚋgraphᚋmodelᚐPost(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Full_post(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Full",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("FieldContext.Child cannot be called on type INTERFACE")
+		},
 	}
 	return fc, nil
 }
@@ -2811,20 +2811,20 @@ func (ec *executionContext) _Element(ctx context.Context, sel ast.SelectionSet, 
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
-	case model.CompactPostCommunityRecommendation:
-		return ec._CompactPostCommunityRecommendation(ctx, sel, &obj)
-	case *model.CompactPostCommunityRecommendation:
+	case model.Compact:
+		return ec._Compact(ctx, sel, &obj)
+	case *model.Compact:
 		if obj == nil {
 			return graphql.Null
 		}
-		return ec._CompactPostCommunityRecommendation(ctx, sel, obj)
-	case model.CardPostCommunityRecommendation:
-		return ec._CardPostCommunityRecommendation(ctx, sel, &obj)
-	case *model.CardPostCommunityRecommendation:
+		return ec._Compact(ctx, sel, obj)
+	case model.Full:
+		return ec._Full(ctx, sel, &obj)
+	case *model.Full:
 		if obj == nil {
 			return graphql.Null
 		}
-		return ec._CardPostCommunityRecommendation(ctx, sel, obj)
+		return ec._Full(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -2866,55 +2866,19 @@ func (ec *executionContext) __Entity(ctx context.Context, sel ast.SelectionSet, 
 
 // region    **************************** object.gotpl ****************************
 
-var cardPostCommunityRecommendationImplementors = []string{"CardPostCommunityRecommendation", "Element"}
+var compactImplementors = []string{"Compact", "Element"}
 
-func (ec *executionContext) _CardPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, obj *model.CardPostCommunityRecommendation) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, cardPostCommunityRecommendationImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("CardPostCommunityRecommendation")
-		case "post":
-			out.Values[i] = ec._CardPostCommunityRecommendation_post(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var compactPostCommunityRecommendationImplementors = []string{"CompactPostCommunityRecommendation", "Element"}
-
-func (ec *executionContext) _CompactPostCommunityRecommendation(ctx context.Context, sel ast.SelectionSet, obj *model.CompactPostCommunityRecommendation) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, compactPostCommunityRecommendationImplementors)
+func (ec *executionContext) _Compact(ctx context.Context, sel ast.SelectionSet, obj *model.Compact) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, compactImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("CompactPostCommunityRecommendation")
+			out.Values[i] = graphql.MarshalString("Compact")
 		case "post":
-			out.Values[i] = ec._CompactPostCommunityRecommendation_post(ctx, field, obj)
+			out.Values[i] = ec._Compact_post(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2979,6 +2943,42 @@ func (ec *executionContext) _Entity(ctx context.Context, sel ast.SelectionSet) g
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var fullImplementors = []string{"Full", "Element"}
+
+func (ec *executionContext) _Full(ctx context.Context, sel ast.SelectionSet, obj *model.Full) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, fullImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Full")
+		case "post":
+			out.Values[i] = ec._Full_post(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

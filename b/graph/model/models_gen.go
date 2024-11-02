@@ -12,19 +12,19 @@ type Post interface {
 	GetID() string
 }
 
-type CardPostCommunityRecommendation struct {
+type Compact struct {
 	Post Post `json:"post,omitempty"`
 }
 
-func (CardPostCommunityRecommendation) IsElement()         {}
-func (this CardPostCommunityRecommendation) GetPost() Post { return this.Post }
+func (Compact) IsElement()         {}
+func (this Compact) GetPost() Post { return this.Post }
 
-type CompactPostCommunityRecommendation struct {
+type Full struct {
 	Post Post `json:"post,omitempty"`
 }
 
-func (CompactPostCommunityRecommendation) IsElement()         {}
-func (this CompactPostCommunityRecommendation) GetPost() Post { return this.Post }
+func (Full) IsElement()         {}
+func (this Full) GetPost() Post { return this.Post }
 
 type Query struct {
 }

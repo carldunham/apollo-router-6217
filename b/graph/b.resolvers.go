@@ -6,13 +6,23 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"main/graph/model"
 )
 
 // WatchFeed is the resolver for the watchFeed field.
 func (r *queryResolver) WatchFeed(ctx context.Context) ([]model.Element, error) {
-	panic(fmt.Errorf("not implemented: WatchFeed - watchFeed"))
+	return []model.Element{
+		&model.Compact{
+			Post: &model.SubredditPost{
+				ID: "1",
+			},
+		},
+		&model.Full{
+			Post: &model.SubredditPost{
+				ID: "1",
+			},
+		},
+	}, nil
 }
 
 // Query returns QueryResolver implementation.

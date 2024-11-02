@@ -14,11 +14,11 @@ interface Element {
   post: Post
 }
 
-type CompactPostCommunityRecommendation implements Element {
+type Compact implements Element {
   post: Post
 }
 
-type CardPostCommunityRecommendation implements Element {
+type Full implements Element {
   post: Post
 }
 

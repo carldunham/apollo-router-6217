@@ -15,14 +15,7 @@ directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boole
 
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
-type CardPostCommunityRecommendation implements Element
-  @join__implements(graph: B, interface: "Element")
-  @join__type(graph: B)
-{
-  post: Post
-}
-
-type CompactPostCommunityRecommendation implements Element
+type Compact implements Element
   @join__implements(graph: B, interface: "Element")
   @join__type(graph: B)
 {
@@ -30,6 +23,13 @@ type CompactPostCommunityRecommendation implements Element
 }
 
 interface Element
+  @join__type(graph: B)
+{
+  post: Post
+}
+
+type Full implements Element
+  @join__implements(graph: B, interface: "Element")
   @join__type(graph: B)
 {
   post: Post
